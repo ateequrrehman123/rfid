@@ -1,0 +1,36 @@
+#include <ArduinoJson.h>
+
+void displayInfo(const char* dispText, const char* value) {
+    Serial.print(dispText);
+    Serial.print(": ");
+    Serial.println(value);
+}
+
+void processJson(JsonObject obj) {
+    for (JsonPair kv : obj) {
+        const char* dispText = kv.value()["dispText"];
+        const char* itemValue = kv.value()["value"];
+        displayInfo(dispText, itemValue);
+    }
+}
+
+void setup() {
+    Serial.begin(115200);
+
+    const char* jsonString = "{\"popup\":false,\"employee\":{\"dispText\":\"Employee\",\"value\":\"123: Usman\"},\"operation\":{\"dispText\":\"Operation\",\"value\":\"ASDASF\"},\"style\":{\"dispText\":\"Style\",\"value\":\"None\"},\"bundle\":{\"dispText\":\"BundlePCs\",\"value\":30},\"pcs\":{\"dispText\":\"Total PCs\",\"value\":30},\"eff\":{\"dispText\":\"Efficiency\",\"value\":\"20%\"}}";
+
+    DynamicJsonDocument doc(1024);
+    DeserializationError error = deserializeJson(doc, jsonString);
+
+    if (error) {
+        Serial.print("Error parsing JSON: ");
+        Serial.println(error.c_str());
+        return;
+    }
+
+    processJson(doc.as<JsonObject>());
+}
+
+void loop() {
+    // Do nothing in the loop
+}

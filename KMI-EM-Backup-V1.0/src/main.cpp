@@ -13,7 +13,7 @@ const char *password = "edraak123";
 AsyncWebServer server(80);
 String fileName;
 File file;
-
+//learning
 void generateRandomValues(uint32_t values[12]) {
     for (int i = 0; i < 12; ++i) {
         values[i] = random();  // Generate a random 32-bit value
